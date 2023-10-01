@@ -4,22 +4,7 @@
 
     <div class="upload">
       <p>Upload an incident report</p>
-      <el-upload
-        class="upload-demo"
-        drag
-        action="/upload"
-        multiple
-      >
-        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">
-          Drag here or,<em> select from your computer</em>
-        </div>
-        <template #tip>
-          <div class="el-upload__tip">
-            xxx files with a size less than 500kb
-          </div>
-        </template>
-      </el-upload>
+      
       <div>
         <input
           type="file"
