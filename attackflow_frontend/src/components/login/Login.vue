@@ -41,7 +41,6 @@ export default {
 .body{
   height: 100vh;
   //background-color: rgb(234, 237, 237);
-  background-color: pink;
   background-image: url("@/assets/images/loginimg.jpg");
   background-repeat: repeat;
   background-size: cover;

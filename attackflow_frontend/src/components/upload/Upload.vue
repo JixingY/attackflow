@@ -1,47 +1,77 @@
-<script setup>
-import Header from "@/components/home/Header.vue";
-import { UploadFilled } from '@element-plus/icons-vue'
-</script>
-
 <template>
-<div>
-  <Header></Header>
+  <div>
+    <Header></Header>
 
-  <div class="upload">
-    <p>Up load an incident report</p>
-  <el-upload
-      class="upload-demo"
-      drag
-      action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-      multiple
-  >
-    <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-    <div class="el-upload__text">
-      Drag here or,<em> select from your computer</em>
-    </div>
-    <template #tip>
-      <div class="el-upload__tip">
-        xxx files with a size less than 500kb
+    <div class="upload">
+      <p>Upload an incident report</p>
+      <el-upload
+          class="upload-demo"
+          drag
+          action="http://localhost:9999/upload"
+          multiple
+          @success="handleUploadSuccess"
+      >
+        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+        <div class="el-upload__text">
+          Drag here or, <em>select from your computer</em>
+        </div>
+        <template #tip>
+          <div class="el-upload__tip">
+            xxx files with a size less than 500kb
+          </div>
+        </template>
+      </el-upload>
+      <div>
+        <button class="btn sub" @click="submitFile">Submit</button>
+        <button class="btn" @click="cancel">Cancel</button>
       </div>
-    </template>
-  </el-upload>
-    <div>
-      <button class="btn sub" @click="">Submit</button>
-      <button class="btn" @click="">Cancel</button>
     </div>
-
   </div>
-</div>
 </template>
 
+<script>
+import Header from "@/components/home/Header.vue";
+import { UploadFilled } from '@element-plus/icons-vue'
+
+export default {
+  components: {
+    UploadFilled,
+    Header,
+  },
+  data() {
+    return {
+      fileContent: '',
+    };
+  },
+  methods: {
+    handleUploadSuccess(response, file, fileList) {
+      // this.fileContent = response.data; // 假设响应中包含文件内容
+      // console.log(this.fileContent);
+      this.fileContent = response.fileContent;
+      console.log(response.message);
+    },
+    submitFile() {
+      console.log("xxxxxxxxxxxxxx"+this.fileContent);
+      this.$router.push({
+        name: 'Annotation', // 使用name属性
+        query: { content: this.fileContent }
+      });
+    },
+    cancel() {
+      // 在这里可以取消上传操作
+    },
+  },
+};
+</script>
+
 <style scoped>
-.upload{
+.upload {
   margin-top: 100px;
   margin-left: 50px;
   margin-right: 50px;
 }
 
-.btn{
+.btn {
   float: right;
   margin-right: 20px;
   width: 100px;
@@ -50,7 +80,7 @@ import { UploadFilled } from '@element-plus/icons-vue'
   border: none;
   cursor: pointer;
 }
-.sub{
+.sub {
   background-color: rgb(98, 29, 186);
   color: white;
 }
