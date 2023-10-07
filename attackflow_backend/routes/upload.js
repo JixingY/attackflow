@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const pdf = require('pdf-parse');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -17,8 +18,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+function extractTextFromPDF(filePath) {
+    return pdf(filePath).then(data => {
+        return data.text;
+    });
+}
+
 // Define the route to handle file uploads
-router.post('/', upload.single('file'), (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
 
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -29,20 +36,23 @@ router.post('/', upload.single('file'), (req, res) => {
         return res.status(400).json({ error: 'No file uploaded' });
     }
 
-
     const filePath = req.file.path;
-    fs.readFile(filePath, 'utf8', (err, fileContent) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error reading file' });
+
+    if (path.extname(filePath) === '.pdf') {
+        try {
+            const fileContent = await extractTextFromPDF(filePath);
+            res.json({ message: 'PDF file uploaded successfully', fileContent: fileContent });
+        } catch (err) {
+            return res.status(500).json({ error: 'Error extracting text from PDF' });
         }
-
-
-        console.log('File content:', fileContent);
-
-
-        res.json({ message: 'File uploaded successfully',
-        fileContent: fileContent});
-    });
+    } else {
+        fs.readFile(filePath, 'utf8', (err, fileContent) => {
+            if (err) {
+                return res.status(500).json({ error: 'Error reading file' });
+            }
+            res.json({ message: 'File uploaded successfully', fileContent: fileContent });
+        });
+    }
 });
 
 router.use('/uploadedFiles', express.static(path.join(__dirname, 'uploadedfiles')));
