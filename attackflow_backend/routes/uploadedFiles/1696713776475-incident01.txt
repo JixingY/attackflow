@@ -1,0 +1,15 @@
+Title: SQL Injection Attack Incident Report
+
+Date: 2023-10-05
+
+Description:
+On the night of 2023-10-04, our website monitoring system alarmed us with an abnormal database query request. Our initial analysis raised suspicions of malicious activity, which led us to conduct a thorough investigation. The investigation confirmed that we were under a SQL injection attack. It was discovered that an attacker tried to exploit our system by submitting malicious SQL code through an input form on our website, aiming to access and extract user data stored in our database.
+
+Impact:
+The attacker managed to bypass our security measures and successfully extracted approximately 100 user records from the user database. These records contained sensitive information including usernames, passwords, and email addresses, which posed a significant risk to user privacy and could potentially lead to identity theft or other forms of fraud if misused.
+
+Response:
+Upon discovering the SQL injection vulnerability, our incident response team acted promptly to rectify the situation. We patched the vulnerability in the input form to prevent further exploitation. To mitigate the risks associated with the exposed user data, we reset the passwords for all affected users and notified them about the incident, advising them to remain vigilant for any suspicious activity on their accounts. Additionally, we enhanced our monitoring system to facilitate quicker detection and response to similar attacks in the future.
+
+Recommendations:
+To prevent such incidents in the future, it's recommended to conduct thorough code reviews to ensure that all inputs across our web applications undergo proper validation and sanitization. Implementing a Web Application Firewall (WAF) is highly advised to provide an extra layer of security that can help to detect and block malicious requests before they reach our application servers. Moreover, regular security training for our development and IT teams can help in staying updated with the latest security best practices and threat landscapes.
