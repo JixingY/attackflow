@@ -45,6 +45,7 @@
 
 
 <script>
+
 import router from "@/router";
 import axios from "axios";
 
@@ -100,7 +101,7 @@ export default {
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*' // 允许所有来源
+          'Access-Control-Allow-Origin': '*'
         }
       };
 

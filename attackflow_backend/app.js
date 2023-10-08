@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
-const port = 3000; // 指定端口
+const port = 9999; // 指定端口
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,10 +15,10 @@ var app = express();
 
 //app.use(cors());
 
-app.use(cors({
-  origin: 'http://localhost:5173',
+app.options('*', cors({
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: '*',
   credentials: true
 }));
 
