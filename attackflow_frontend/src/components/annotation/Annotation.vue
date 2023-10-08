@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { getChatGPTSuggestions } from '@/utils/chatgpt.mjs';
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from 'vue-router';
 
@@ -51,18 +52,8 @@ export default {
         //Seek suggestions from chatgpt
         loadingKeywords.value = true;
         try {
-            const response = await fetch(`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`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    prompt: fileContent.value,
-                    // 其他需要的参数
-                })
-            });
-            const data = await response.json();
-            chatGPTSuggestions.value = data.suggestions; // 根据实际的API响应来调整
+            const suggestions = await getChatGPTSuggestions(fileContent.value);
+            chatGPTSuggestions.value = suggestions.split(','); // 假设ChatGPT返回一个逗号分隔的关键词列表
         } catch (error) {
             console.error("Error fetching ChatGPT suggestions:", error);
         } finally {
