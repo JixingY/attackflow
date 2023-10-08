@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 const port = 9999; // 指定端口
+const openaiRouter = require('./routes/openai');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -12,6 +13,8 @@ var annotatorRouter = require('./routes/annotator');
 var uploadRouter = require('./routes/upload');
 
 var app = express();
+
+app.use('/openai', openaiRouter);
 
 app.use(cors({
   origin: 'http://localhost:5173'

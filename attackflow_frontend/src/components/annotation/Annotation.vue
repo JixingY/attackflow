@@ -24,17 +24,11 @@
 </template>
 
 <script>
-import { getChatGPTSuggestions } from '@/utils/chatgpt.mjs';
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from 'vue-router';
 
 export default {
-  props: {
-    router: {
-      type: Object,
-    },
-  },
-  setup(props) {
+  setup() {
     const route = useRoute();
     const filePath = ref(route.query.filePath || "");
     const fileContent = ref("");
@@ -43,17 +37,32 @@ export default {
     const loadingKeywords = ref(false);
     const chatGPTSuggestions = ref([]);
 
-    // 当组件加载时，请求文件内容
+    async function getChatGPTSuggestions(prompt) {
+        try {
+            const response = await fetch('http://localhost:9999/openai/getChatGPTSuggestions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: prompt })
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error fetching ChatGPT suggestions:", error);
+            throw error;
+        }
+    }
+
     onMounted(async () => {
         const response = await fetch(`http://localhost:9999/upload/getFileContent?filePath=${filePath.value}`);
         const data = await response.json();
         fileContent.value = data.fileContent;
 
-        //Seek suggestions from chatgpt
         loadingKeywords.value = true;
         try {
             const suggestions = await getChatGPTSuggestions(fileContent.value);
-            chatGPTSuggestions.value = suggestions.split(','); // 假设ChatGPT返回一个逗号分隔的关键词列表
+            chatGPTSuggestions.value = suggestions.split(','); // Assuming ChatGPT returns a comma-separated list of keywords
         } catch (error) {
             console.error("Error fetching ChatGPT suggestions:", error);
         } finally {
@@ -62,8 +71,7 @@ export default {
     });
 
     const highlightedText = computed(() => {
-      // 高亮关键词
-      let highlighted = fileContent.value; // 使用接收到的文件内容
+      let highlighted = fileContent.value;
       keywords.value.forEach((keyword) => {
         const regex = new RegExp(keyword, "g");
         highlighted = highlighted.replace(regex, `<span class="highlight">${keyword}</span>`);
@@ -72,13 +80,11 @@ export default {
     });
 
     const highlightText = () => {
-      // 高亮鼠标选中的文本
       const selection = window.getSelection();
       selectedText.value = selection.toString();
     };
 
     const saveHighlightedKeywords = () => {
-      // 保存鼠标选中的文本为关键词
       if (selectedText.value.trim() !== "") {
         keywords.value.push(selectedText.value);
         selectedText.value = "";
