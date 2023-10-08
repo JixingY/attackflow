@@ -6,6 +6,13 @@
         <p v-html="highlightedText"></p>
       </div>
     </div>
+    <div v-if="loadingKeywords" class="loading-indicator">Loading ChatGPT suggestions...</div>
+    <div v-if="chatGPTSuggestions.length">
+      <h2>ChatGPT Suggestions</h2>
+      <ul>
+        <li v-for="(suggestion, index) in chatGPTSuggestions" :key="index">{{ suggestion }}</li>
+      </ul>
+    </div>
     <button class="save-button" @click="saveHighlightedKeywords">Save</button>
     <div class="keyword-list">
       <h2>Keywords</h2>
@@ -32,12 +39,35 @@ export default {
     const fileContent = ref("");
     const keywords = ref([]);
     const selectedText = ref("");
+    const loadingKeywords = ref(false);
+    const chatGPTSuggestions = ref([]);
 
     // 当组件加载时，请求文件内容
     onMounted(async () => {
         const response = await fetch(`http://localhost:9999/upload/getFileContent?filePath=${filePath.value}`);
         const data = await response.json();
         fileContent.value = data.fileContent;
+
+        //Seek suggestions from chatgpt
+        loadingKeywords.value = true;
+        try {
+            const response = await fetch(`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`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    prompt: fileContent.value,
+                    // 其他需要的参数
+                })
+            });
+            const data = await response.json();
+            chatGPTSuggestions.value = data.suggestions; // 根据实际的API响应来调整
+        } catch (error) {
+            console.error("Error fetching ChatGPT suggestions:", error);
+        } finally {
+            loadingKeywords.value = false;
+        }
     });
 
     const highlightedText = computed(() => {
@@ -71,6 +101,8 @@ export default {
       highlightedText,
       highlightText,
       saveHighlightedKeywords,
+      loadingKeywords,
+      chatGPTSuggestions
     };
   },
 };
