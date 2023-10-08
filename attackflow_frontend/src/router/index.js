@@ -8,6 +8,7 @@ import Detail from "@/components/database/Detail.vue";
 import Annotator from "@/components/annotator/Annotator.vue";
 import Admin from "@/components/admin/Admin.vue";
 import Profile from "@/components/annotator/profile/Profile.vue";
+import Annotation from "@/components/annotation/Annotation.vue";
 
 
 
@@ -47,6 +48,12 @@ const routes = [
     {
         path: '/admin',
         component: Admin
+    },
+    {
+        path: '/annotation',
+        name: 'Annotation',
+        component: Annotation,
+        props: true,
     },
     {
         path: '/database/:id',

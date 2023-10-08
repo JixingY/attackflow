@@ -9,6 +9,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', async function(req, res, next) {
+  // 在响应中设置CORS头
+  res.header('Access-Control-Allow-Origin', '*'); // 允许所有来源
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // 允许的请求头
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // 允许的HTTP方法
+
+
   try {
     // Generate a hash for the password
     const hashedPassword = await bcrypt.hash(req.body.password, 10); // 10 is the hashing cost
@@ -38,6 +44,12 @@ router.post('/register', async function(req, res, next) {
 });
 
 router.post('/login', async function(req, res, next) {
+  // 在响应中设置CORS头
+  res.header('Access-Control-Allow-Origin', '*'); // 允许所有来源
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // 允许的请求头
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // 允许的HTTP方法
+
+
   try {
     const { account, password } = req.body;
 
