@@ -13,7 +13,9 @@ var uploadRouter = require('./routes/upload');
 
 var app = express();
 
-//app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
 
 app.options('*', cors({
   origin: '*',

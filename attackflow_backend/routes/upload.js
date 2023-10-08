@@ -27,9 +27,9 @@ function extractTextFromPDF(filePath) {
 // Define the route to handle file uploads
 router.post('/', upload.single('file'), async (req, res) => {
 
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    //res.header('Access-Control-Allow-Origin', '*');
+    //res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    //res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 
     // Check if a file was uploaded
     if (!req.file) {
