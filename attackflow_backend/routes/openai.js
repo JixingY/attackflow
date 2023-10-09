@@ -3,7 +3,7 @@ const axios = require('axios'); // 使用axios库进行HTTP请求
 const router = express.Router();
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/engines/davinci/completions';
-const OPENAI_API_KEY = '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'; 
+const OPENAI_API_KEY = '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'; 
 
 router.post('/getChatGPTSuggestions', async (req, res) => {
     try {

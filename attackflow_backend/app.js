@@ -14,11 +14,11 @@ var uploadRouter = require('./routes/upload');
 
 var app = express();
 
-app.use('/openai', openaiRouter);
-
 app.use(cors({
   origin: 'http://localhost:5173'
 }));
+
+app.use('/openai', openaiRouter);
 
 app.options('*', cors({
   origin: '*',
