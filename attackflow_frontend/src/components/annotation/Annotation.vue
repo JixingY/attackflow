@@ -64,7 +64,8 @@ export default {
             const suggestions = await getChatGPTSuggestions(fileContent.value);
             chatGPTSuggestions.value = suggestions.split(','); // Assuming ChatGPT returns a comma-separated list of keywords
         } catch (error) {
-            console.error("Error fetching ChatGPT suggestions:", error);
+            console.error("Error fetching ChatGPT suggestions:", error.message);
+            alert(`Error fetching ChatGPT suggestions: ${error.message}`);
         } finally {
             loadingKeywords.value = false;
         }

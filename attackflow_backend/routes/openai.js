@@ -18,9 +18,10 @@ router.post('/getChatGPTSuggestions', async (req, res) => {
         });
 
         res.json(response.data.choices[0].text);
-    } catch (error) {
-        res.status(500).json({ error: 'Error fetching ChatGPT suggestions' });
-    }
+      } catch (error) {
+        console.error("Error fetching ChatGPT suggestions:", error.message);
+        res.status(500).json({ error: `Error fetching ChatGPT suggestions: ${error.message}` });
+      }
 });
 
 module.exports = router;
