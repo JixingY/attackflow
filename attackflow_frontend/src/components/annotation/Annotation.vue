@@ -61,8 +61,12 @@ export default {
 
         loadingKeywords.value = true;
         try {
-            const suggestions = await getChatGPTSuggestions(fileContent.value);
-            chatGPTSuggestions.value = suggestions.split(','); // Assuming ChatGPT returns a comma-separated list of keywords
+            const response = await getChatGPTSuggestions(fileContent.value);
+            if (typeof response === "string") {
+                chatGPTSuggestions.value = response.split(',');  // 确保 response 是一个字符串
+            } else {
+                console.error("Received non-string response:", response);
+            }
         } catch (error) {
             console.error("Error fetching ChatGPT suggestions:", error.message);
             alert(`Error fetching ChatGPT suggestions: ${error.message}`);
