@@ -1,5 +1,3 @@
-import { getChatGPTSuggestions } from '@/public/chatgpt.mjs';
-
 <template>
   <div class="text-labeling">
     <div class="text-display">
@@ -7,13 +5,6 @@ import { getChatGPTSuggestions } from '@/public/chatgpt.mjs';
       <div class="highlighted-text" @mouseup="highlightText">
         <p v-html="highlightedText"></p>
       </div>
-    </div>
-    <div v-if="loadingKeywords" class="loading-indicator">Loading ChatGPT suggestions...</div>
-    <div v-if="chatGPTSuggestions.length">
-      <h2>ChatGPT Suggestions</h2>
-      <ul>
-        <li v-for="(suggestion, index) in chatGPTSuggestions" :key="index">{{ suggestion }}</li>
-      </ul>
     </div>
     <button class="save-button" @click="saveHighlightedKeywords">Save</button>
     <div class="keyword-list">
@@ -41,25 +32,12 @@ export default {
     const fileContent = ref("");
     const keywords = ref([]);
     const selectedText = ref("");
-    const loadingKeywords = ref(false);
-    const chatGPTSuggestions = ref([]);
 
     // 当组件加载时，请求文件内容
     onMounted(async () => {
         const response = await fetch(`http://localhost:9999/upload/getFileContent?filePath=${filePath.value}`);
         const data = await response.json();
         fileContent.value = data.fileContent;
-
-        //Seek suggestions from chatgpt
-        loadingKeywords.value = true;
-        try {
-            const suggestions = await getChatGPTSuggestions(fileContent.value);
-            chatGPTSuggestions.value = suggestions.split(','); // 假设ChatGPT返回一个逗号分隔的关键词列表
-        } catch (error) {
-            console.error("Error fetching ChatGPT suggestions:", error);
-        } finally {
-            loadingKeywords.value = false;
-        }
     });
 
     const highlightedText = computed(() => {
@@ -93,8 +71,6 @@ export default {
       highlightedText,
       highlightText,
       saveHighlightedKeywords,
-      loadingKeywords,
-      chatGPTSuggestions
     };
   },
 };
