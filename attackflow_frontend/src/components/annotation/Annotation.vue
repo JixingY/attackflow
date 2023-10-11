@@ -39,11 +39,13 @@ export default {
     const selectedText = ref("");
     const chatGPTResponse = ref("");
 
-    async function askChatGPT(question) {
+    async function askChatGPT() {
       try {
         const response = await axios.post('http://localhost:9999/chatgpt/ask', {
-          prompt: question
+          
+          prompt: `Extract keywords from the following text and separate them with commas: ${fileContent.value}`
         });
+        //console.log("ChatGPT response:", response.data);
         chatGPTResponse.value = response.data.choices[0].text.trim();
       } catch (error) {
         console.error('Error calling backend:', error);
@@ -55,7 +57,7 @@ export default {
         const response = await fetch(`http://localhost:9999/upload/getFileContent?filePath=${filePath.value}`);
         const data = await response.json();
         fileContent.value = data.fileContent;
-        askChatGPT('Which is the largest country?');  // 自动获取答案
+        askChatGPT();  // 自动获取答案
     });
 
     const highlightedText = computed(() => {
@@ -170,4 +172,3 @@ button.save-button {
 }
 
 </style>
-
