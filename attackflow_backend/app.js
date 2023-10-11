@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 const port = 9999; // 指定端口
+const chatgptRouter = require('./routes/chatgpt');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -23,6 +26,8 @@ app.options('*', cors({
   allowedHeaders: '*',
   credentials: true
 }));
+
+app.use('/chatgpt', chatgptRouter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -60,3 +65,5 @@ app.listen(port, () => {
 });
 
 module.exports = app;
+
+console.log("ChatGPT API Key:", process.env.CHATGPT_API_KEY);
