@@ -8,6 +8,7 @@ var logger = require('morgan');
 const cors = require('cors');
 const port = 9999; // 指定端口
 const chatgptRouter = require('./routes/chatgpt');
+const bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -27,6 +28,8 @@ app.options('*', cors({
   credentials: true
 }));
 
+app.use(bodyParser.json()); // 用于解析JSON请求体
+app.use(bodyParser.urlencoded({ extended: true })); // 用于解析URL编码的请求体
 app.use('/chatgpt', chatgptRouter);
 
 // view engine setup

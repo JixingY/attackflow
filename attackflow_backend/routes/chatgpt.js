@@ -15,6 +15,7 @@ router.post('/ask', async (req, res) => {
 
         res.json(response.data);
     } catch (error) {
+        console.error('Detailed error:', error);  // 打印详细的错误信息
         res.status(500).json({ error: 'Error calling ChatGPT API' });
     }
 });
