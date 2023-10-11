@@ -9,7 +9,6 @@
     <div class="chatgpt-section">
       <h2>ChatGPT Advice</h2>
       <textarea v-model="chatGPTResponse" readonly></textarea>
-      <button @click="askChatGPT('Which is the largest country?')">Get Answer</button>
     </div>
     <button class="save-button" @click="saveHighlightedKeywords">Save</button>
     <div class="keyword-list">
@@ -56,6 +55,7 @@ export default {
         const response = await fetch(`http://localhost:9999/upload/getFileContent?filePath=${filePath.value}`);
         const data = await response.json();
         fileContent.value = data.fileContent;
+        askChatGPT('Which is the largest country?');  // 自动获取答案
     });
 
     const highlightedText = computed(() => {
