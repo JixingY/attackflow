@@ -42,8 +42,8 @@ export default {
     async function askChatGPT() {
       try {
         const response = await axios.post('http://localhost:9999/chatgpt/ask', {
-          
-          prompt: `Extract keywords from the following text and separate them with commas: ${fileContent.value}`
+          prompt: `Which is the largest country in this world?`
+          //prompt: `Extract keywords from the following text and separate them with commas: ${fileContent.value}`
         });
         //console.log("ChatGPT response:", response.data);
         chatGPTResponse.value = response.data.choices[0].text.trim();
